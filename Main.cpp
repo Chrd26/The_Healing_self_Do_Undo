@@ -54,7 +54,7 @@ std::string randomDo(){
     "Walk for 20 to 30 minutes in the evening.", "Take 10 minutes of quiet alone time, preferable in meditation, twice today.", 
     "Spend more time with a physically active friend or family member."  }
     //Friday Core Beliefs
-    ,{"Write down five core believes and evaluate why you believe them.", "Put a core belief into action.", "Read a poem, scripture , or spiritual passage for inspiration."
+    ,{"Write down five core believes and evaluate why you believe them.", "Put a core belief into action.", "Read a poem, scripture , or spiritual passage for inspiration.",
      "Have a family discussion about which core beliefs everyone holds.", "Take your favorite role model and list what core beliefs they held."}
     //Saturday Non-Struggle
     ,{"Take an allowing attitude.", "Approach a situation without resistance.", "Act Gracefully.", "Share a responsibility", "Encourage areas of flow"}
@@ -154,7 +154,7 @@ std::string undoListPerDay[7][6] = {
  {"Replace 10 minutes of sofa time in front of the TV with a walk instead,", "Break the habit of waiting until the weekend to catch up on lost sleep.", "If you drink alcohol, do it early in the evening - go to bed without alcohol in your bloodstream",
  "Replace the midmoring coffee and doughnut break with a walk.", "Walk to one place close by that you usually drive to.", "Examine your excuses for not being more active."},
  //Friday Core Beliefs
- {"Examine your negative belifes as they relate to fear and mistrust,", "Open a line of communication with someone who holds radically different values", "If you are stuck on a negative belief, be a devil's advocate and argue against it.",
+ {"Examine your negative belifes as they relate to fear and mistrust.", "Open a line of communication with someone who holds radically different values", "If you are stuck on a negative belief, be a devil's advocate and argue against it.",
  "End your participation in us-versus-them thinking."},
  //Saturday Non-Struggle
  {"Stop resisting where you don't need to.", "Let someone else have their way.", "Help reduce an area of conflict.", "Remove obstacles from someone else's path.", "Ease competition if favor of cooperation."}
@@ -210,14 +210,14 @@ break;
 {
 mainClass.randomizedUndoNumber();
 randomUndoNumber = mainClass.randomizedUndoNumber(); 
-} while (randomUndoNumber > 3);
+} while (randomUndoNumber > 4);
 break;
 
     case 6 :
 do{
    mainClass.randomizedUndoNumber();
    randomUndoNumber = mainClass.randomizedUndoNumber();
-}while (randomUndoNumber > 4);
+}while (randomUndoNumber > 3);
 
     break;
 
