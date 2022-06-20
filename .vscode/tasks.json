@@ -29,7 +29,9 @@
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "`./wx-config --cxxflags --libs`"
+                "`./wx-config --cxxflags --libs`",
+                "-I",
+                "/Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost"
             ],
             "options": {
                 "cwd": "${fileDirname}"

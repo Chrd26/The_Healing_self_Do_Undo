@@ -24,7 +24,7 @@ tm *tPtr = localtime(&t);
 currentDay = mainClass.findDay(tPtr->tm_wday);
 
 //Output the name of the day. This is going to be used to print the Day of the UI
-std::cout << currentDay << std::endl;
+//std::cout << currentDay << std::endl;
 
 return currentDay;
 }

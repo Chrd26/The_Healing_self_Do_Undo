@@ -1,5 +1,7 @@
 #include "Main.cpp"
 #include <wx/wx.h>
+#include </Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost/boost/archive/binary_iarchive.hpp>
+#include </Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost/boost/archive/binary_oarchive.hpp>
 
 class myApp:public wxApp{
     public:
@@ -23,7 +25,7 @@ class myFrame:public wxFrame{
 
     myFrame* frame = new myFrame(day, wxDefaultPosition, wxSize(800, 640));
     wxStaticText* text = new wxStaticText(frame, wxID_ANY, toDo, wxDefaultPosition, wxDefaultSize, 0, "Do List");
-    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, toUndo, wxPoint(1,15), wxDefaultSize, 0, "Undo List");
+    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, toUndo, wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
     frame->Show(true);
     return true;
 
