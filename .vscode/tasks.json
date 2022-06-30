@@ -30,8 +30,9 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "`wx-config --cxxflags --libs`",
-                "-I/usr/local/Cellar/boost/1.78.0_1/include",
-                "-L/usr/local/Cellar/boost/1.78.0_1/lib",
+                "-I/usr/local/Cellar/boost/1.78.0_1",
+                "/usr/local/Cellar/boost/1.78.0_1/lib/libboost_serialization-mt.a",
+                "/usr/local/Cellar/boost/1.78.0_1/lib/libboost_system-mt.a"
             ],
             "options": {
                 "cwd": "${fileDirname}"
