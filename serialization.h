@@ -1,8 +1,8 @@
 #include "Main.cpp"
 #include <sstream>
 #include <string>
-#include </Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost/boost/archive/binary_iarchive.hpp>
-#include </Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost/boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 
 class saveState{
 

@@ -22,16 +22,16 @@
             "label": "C/C++: clang++ build active file",
             "command": "/usr/bin/clang++",
             "args": [
-                "-std=c++17",
+                 "-std=c++17",
                 "-stdlib=libc++",
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "`./wx-config --cxxflags --libs`",
-                "-I",
-                "/Users/chrisdouris/Desktop/Dev_Projects/Libraries/C++/wxWidgets-3.1.6/macbuild/boost"
+                "`wx-config --cxxflags --libs`",
+                "-I/usr/local/Cellar/boost/1.78.0_1/include",
+                "-L/usr/local/Cellar/boost/1.78.0_1/lib",
             ],
             "options": {
                 "cwd": "${fileDirname}"
