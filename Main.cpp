@@ -210,7 +210,7 @@ break;
 {
 mainClass.randomizedUndoNumber();
 randomUndoNumber = mainClass.randomizedUndoNumber(); 
-} while (randomUndoNumber > 4);
+} while (randomUndoNumber > 3);
 break;
 
     case 6 :
