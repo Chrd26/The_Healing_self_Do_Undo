@@ -1,5 +1,6 @@
 #include "Main.cpp"
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
@@ -7,7 +8,7 @@
 
 class saveState{
 
-private:
+public:
 
 friend class boost::serialization::access;
 
@@ -27,7 +28,7 @@ void serialize(Archive& ar, const unsigned int version){
 
 public:
  saveState(){};
- saveState(std::string d, std::string u, std::string o) :day(d), undoList(u), doList(o){};
+ saveState(std::string d, std::string o, std::string u) :day(d), doList(o), undoList(u){};
 
 void showData(){
 
@@ -36,15 +37,19 @@ std::cout << day << " , " << doList << " , " << undoList << std::endl;
 };
 
 void save(std::ostringstream& oss){
-boost::archive::binary_oarchive oa(oss);
+std::ofstream ofs("filename");
+boost::archive::binary_oarchive oa(ofs);
 oa & *(this);
+
+
 
 };
 
 void load (std::ostringstream& oss){
+    std::ifstream ifs("filename");
     std::string str_data = oss.str();
     std::istringstream iss(str_data);
-    boost::archive::binary_iarchive ia(iss);
+    boost::archive::binary_iarchive ia(ifs);
     ia & *(this);
 };
 
