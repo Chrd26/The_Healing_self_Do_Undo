@@ -1,66 +1,40 @@
 #include "Main.cpp"
-#include <sstream>
-#include <fstream>
-#include <string>
+#include "wx-3.1/wx/wx.h"
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include "wx-3.1/wx/wx.h"
 
-class saveState{
+#include <boost/archive/impl/basic_text_oarchive.ipp>
+#include <boost/archive/impl/text_oarchive_impl.ipp>
+#include <boost/archive/impl/basic_text_iarchive.ipp>
+#include <boost/archive/impl/text_iarchive_impl.ipp>
+#include <fstream>
 
+class saveFiles
+{
 public:
+    friend class boost::serialization::access;
+    std::string day;
+    std::string doList;
+    std::string undoList;
+    saveFiles(){};
+    saveFiles(std::string d, std::string o, std::string u) :
+        day(d), doList(o), undoList(u)
+    {}
+};
 
-friend class boost::serialization::access;
+namespace boost {
+namespace serialization {
 
-std::string day;
-std::string undoList;
-std::string doList;
-
-template <class Archive>
-
-void serialize(Archive& ar, const unsigned int version){
-
-    ar& day;
-    ar& undoList;
-    ar& doList;
-
+template<class Archive>
+void serialize(Archive & ar, saveFiles & g, const unsigned int version)
+{
+    ar & g.day;
+    ar & g.doList;
+    ar & g.undoList;
 }
 
-public:
- saveState(){};
- saveState(std::string d, std::string o, std::string u) :day(d), doList(o), undoList(u){};
-
-void showData(){
-
-std::cout << day << " , " << doList << " , " << undoList << std::endl;
-
-};
-
-void save(std::ostringstream& oss){
-std::ofstream ofs("filename");
-boost::archive::binary_oarchive oa(ofs);
-oa & *(this);
-
-
-
-};
-
-void load (std::ostringstream& oss){
-    std::ifstream ifs("filename");
-    std::string str_data = oss.str();
-    std::istringstream iss(str_data);
-    boost::archive::binary_iarchive ia(ifs);
-    ia & *(this);
-};
-
-~saveState(){
-
-
-}
-
-};
-
-BOOST_CLASS_VERSION(saveState, 1);
+} // namespace serialization
+} // namespace boost
 
 class myApp:public wxApp{
     public:
@@ -81,12 +55,32 @@ class myFrame:public wxFrame{
     std::string currentDay = mainFunction.function();
     std::string currentRandomDo = mainFunction.randomDo();
     std::string currentRandomUndo = mainFunction.randomUndo();
-    saveState emp(currentDay, currentRandomDo, currentRandomUndo);
-    std::ostringstream oss;
-    emp.save(oss);
-    saveState newEmp;
-    newEmp.load(oss);
-    newEmp.showData();
+
+    // create and open a character archive for output
+    std::ofstream ofs("filename");
+
+    // create class instance
+    const saveFiles g(currentDay, currentRandomDo, currentRandomUndo);
+
+    // save data to archive
+    { 
+        boost::archive::text_oarchive oa(ofs);
+        // write class instance to archive
+        oa << g;
+    	// archive and stream closed when destructors are called
+    }
+
+    // ... some time later restore the class instance to its orginal state
+    saveFiles newg;
+    
+    {
+        // create and open an archive for input
+        std::ifstream ifs("filename");
+        boost::archive::text_iarchive ia(ifs);
+        // read class state from archive
+        ia >> newg;
+        // archive and stream closed when destructors are called
+    }
 
     myFrame* frame = new myFrame(currentDay, wxDefaultPosition, wxSize(800, 640));
     wxStaticText* text = new wxStaticText(frame, wxID_ANY, currentRandomDo, wxDefaultPosition, wxDefaultSize, 0, "Do List");
