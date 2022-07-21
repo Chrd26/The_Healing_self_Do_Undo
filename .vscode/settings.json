@@ -105,7 +105,9 @@
         "typeindex": "cpp",
         "unordered_set": "cpp",
         "valarray": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "*.inc": "cpp",
+        "*.ipp": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}/.."
 }

@@ -2,6 +2,7 @@
 #include "wx-3.1/wx/wx.h"
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <stdio.h>
 
 #include <boost/archive/impl/basic_text_oarchive.ipp>
 #include <boost/archive/impl/text_oarchive_impl.ipp>
@@ -9,33 +10,37 @@
 #include <boost/archive/impl/text_iarchive_impl.ipp>
 #include <fstream>
 
-//random comment for pushing purposes
-class saveFiles
+    class saveData
 {
-public:
+private:
     friend class boost::serialization::access;
+    // When the class Archive corresponds to an output archive, the
+    // & operator is defined similar to <<.  Likewise, when the class Archive
+    // is a type of input archive the & operator is defined similar to >>.
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & day;
+        ar & randomDo;
+        ar & randomUndo;
+    }
     std::string day;
-    std::string doList;
-    std::string undoList;
-    saveFiles(){};
-    saveFiles(std::string d, std::string o, std::string u) :
-        day(d), doList(o), undoList(u)
+    std::string randomDo;
+    std::string randomUndo;
+public:
+    saveData(){};
+    saveData(std::string d, std::string o, std::string u) :
+        day(d), randomDo(o), randomUndo(u)
     {}
+
+    std::string data(int number){
+        std::string code[3]{day, randomDo, randomUndo};
+        return code[number];
+    }
 };
 
-namespace boost {
-namespace serialization {
 
-template<class Archive>
-void serialize(Archive & ar, saveFiles & g, const unsigned int version)
-{
-    ar & g.day;
-    ar & g.doList;
-    ar & g.undoList;
-}
-
-} // namespace serialization
-} // namespace boost
+BOOST_CLASS_VERSION(saveData, 1)
 
 class myApp:public wxApp{
     public:
@@ -51,41 +56,33 @@ class myFrame:public wxFrame{
 
 
  bool myApp::OnInit(){
-
+    
+    saveData allData;
     mainClass mainFunction;
     std::string currentDay = mainFunction.function();
     std::string currentRandomDo = mainFunction.randomDo();
     std::string currentRandomUndo = mainFunction.randomUndo();
 
-    // create and open a character archive for output
     std::ofstream ofs("filename");
+    boost::archive::text_oarchive oa(ofs);
 
-    // create class instance
-    const saveFiles g(currentDay, currentRandomDo, currentRandomUndo);
+    const saveData g(currentDay, currentRandomDo, currentRandomUndo);
 
-    // save data to archive
-    { 
-        boost::archive::text_oarchive oa(ofs);
-        // write class instance to archive
-        oa << g;
-    	// archive and stream closed when destructors are called
-    }
+    oa << g;
+    ofs.close();
 
-    // ... some time later restore the class instance to its orginal state
-    saveFiles newg;
-    
-    {
-        // create and open an archive for input
-        std::ifstream ifs("filename");
-        boost::archive::text_iarchive ia(ifs);
-        // read class state from archive
-        ia >> newg;
-        // archive and stream closed when destructors are called
-    }
+    std::ifstream ifs("filename", std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    // read class state from archive
+    saveData newg;
+    ia >> newg;
+    // close archive
+    ifs.close();
 
-    myFrame* frame = new myFrame(currentDay, wxDefaultPosition, wxSize(800, 640));
-    wxStaticText* text = new wxStaticText(frame, wxID_ANY, currentRandomDo, wxDefaultPosition, wxDefaultSize, 0, "Do List");
-    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, currentRandomUndo, wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
+
+    myFrame* frame = new myFrame("hello", wxDefaultPosition, wxSize(800, 640));
+    wxStaticText* text = new wxStaticText(frame, wxID_ANY, "aaa", wxDefaultPosition, wxDefaultSize, 0, "Do List");
+    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, "memes", wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
     frame->Show(true);
     return true;
 
