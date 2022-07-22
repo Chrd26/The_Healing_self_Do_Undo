@@ -12,11 +12,8 @@
 
     class saveData
 {
-private:
+public:
     friend class boost::serialization::access;
-    // When the class Archive corresponds to an output archive, the
-    // & operator is defined similar to <<.  Likewise, when the class Archive
-    // is a type of input archive the & operator is defined similar to >>.
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
@@ -27,16 +24,11 @@ private:
     std::string day;
     std::string randomDo;
     std::string randomUndo;
-public:
+
     saveData(){};
     saveData(std::string d, std::string o, std::string u) :
         day(d), randomDo(o), randomUndo(u)
     {}
-
-    std::string data(int number){
-        std::string code[3]{day, randomDo, randomUndo};
-        return code[number];
-    }
 };
 
 
@@ -63,6 +55,8 @@ class myFrame:public wxFrame{
     std::string currentRandomDo = mainFunction.randomDo();
     std::string currentRandomUndo = mainFunction.randomUndo();
 
+    //save
+
     std::ofstream ofs("filename");
     boost::archive::text_oarchive oa(ofs);
 
@@ -71,18 +65,19 @@ class myFrame:public wxFrame{
     oa << g;
     ofs.close();
 
+    //load
+
     std::ifstream ifs("filename", std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
-    // read class state from archive
     saveData newg;
     ia >> newg;
-    // close archive
     ifs.close();
+    
+    //create ui
 
-
-    myFrame* frame = new myFrame("hello", wxDefaultPosition, wxSize(800, 640));
-    wxStaticText* text = new wxStaticText(frame, wxID_ANY, "aaa", wxDefaultPosition, wxDefaultSize, 0, "Do List");
-    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, "memes", wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
+    myFrame* frame = new myFrame(newg.day, wxDefaultPosition, wxSize(800, 640));
+    wxStaticText* text = new wxStaticText(frame, wxID_ANY, newg.randomDo, wxDefaultPosition, wxDefaultSize, 0, "Do List");
+    wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, newg.randomUndo, wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
     frame->Show(true);
     return true;
 
