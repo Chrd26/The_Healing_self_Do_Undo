@@ -51,28 +51,46 @@ class myFrame:public wxFrame{
     
     saveData allData;
     mainClass mainFunction;
+    /*
     std::string currentDay = mainFunction.function();
     std::string currentRandomDo = mainFunction.randomDo();
     std::string currentRandomUndo = mainFunction.randomUndo();
+     */
 
-    //save
+    //load
+    std::ifstream ifs("filename", std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    saveData newg;
+    ia >> newg;
+    ifs.close();
+
+
+    mainFunction.function();
+
+    std::string currentDay = mainFunction.function();
+   
+    if(newg.day !=currentDay){
+
+    mainFunction.randomDo();
+    mainFunction.randomUndo();
+    
+     std::string currentRandomDo = mainFunction.randomDo();
+    std::string currentRandomUndo = mainFunction.randomUndo();
 
     std::ofstream ofs("filename");
-    boost::archive::text_oarchive oa(ofs);
-
+    boost::archive::text_oarchive oa(ofs); 
     const saveData g(currentDay, currentRandomDo, currentRandomUndo);
 
     oa << g;
     ofs.close();
-
-    //load
 
     std::ifstream ifs("filename", std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     saveData newg;
     ia >> newg;
     ifs.close();
-    
+    }
+
     //create ui
 
     myFrame* frame = new myFrame(newg.day, wxDefaultPosition, wxSize(800, 640));
@@ -80,8 +98,6 @@ class myFrame:public wxFrame{
     wxStaticText* textTwo = new wxStaticText(frame, wxID_ANY, newg.randomUndo, wxPoint(-1,15), wxDefaultSize, 0, "Undo List");
     frame->Show(true);
     return true;
-
-
  }
 
  myFrame::myFrame(const wxString& title, const wxPoint& pos, const wxSize& size):wxFrame(nullptr, wxID_ANY,title, pos, size ){
