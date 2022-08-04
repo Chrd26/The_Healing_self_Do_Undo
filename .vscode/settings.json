@@ -107,7 +107,9 @@
         "valarray": "cpp",
         "utility": "cpp",
         "*.inc": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp"
     },
     "cmake.sourceDirectory": "${workspaceFolder}/.."
 }
