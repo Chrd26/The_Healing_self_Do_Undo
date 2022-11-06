@@ -15,6 +15,7 @@
 public:
     friend class boost::serialization::access;
     template<class Archive>
+    //Declare the names of the archived data and define the type
     void serialize(Archive & ar, const unsigned int version)
     {
         ar & day;
@@ -31,7 +32,7 @@ public:
     {}
 };
 
-
+//Define the type of boost class
 BOOST_CLASS_VERSION(saveData, 1)
 
 class myApp:public wxApp{
@@ -50,6 +51,7 @@ class myFrame:public wxFrame{
     DECLARE_EVENT_TABLE()
 };
 
+//Enumerate
 enum
 {
 
@@ -57,13 +59,13 @@ BUTTON_Exit = wxID_HIGHEST + 1
 
 };
 
-
+//Create Window, Load, Save files
  bool myApp::OnInit(){
     
     saveData allData;
     mainClass mainFunction;
 
-    //load
+    //Load File
     std::ifstream ifs("filename", std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     saveData newg;
@@ -74,13 +76,15 @@ BUTTON_Exit = wxID_HIGHEST + 1
     mainFunction.function();
 
     std::string currentDay = mainFunction.function();
-   
+    
+    //If the saved day data is different than the computer's day, then generate
+    //new do/undo proposales for the new day and save them in the archive.
     if(newg.day !=currentDay){
 
     mainFunction.randomDo();
     mainFunction.randomUndo();
     
-     std::string currentRandomDo = mainFunction.randomDo();
+    std::string currentRandomDo = mainFunction.randomDo();
     std::string currentRandomUndo = mainFunction.randomUndo();
 
     std::ofstream ofs("filename");
@@ -90,6 +94,7 @@ BUTTON_Exit = wxID_HIGHEST + 1
     oa << g;
     ofs.close();
 
+    //Save File
     std::ifstream ifs("filename", std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     saveData newg;
@@ -105,7 +110,8 @@ BUTTON_Exit = wxID_HIGHEST + 1
     frame->Show(true);
     return true;
  }
-
+//Begin an event for the frame, create a button, position and scale the button based on the added values,
+//If the button is pressed, then the window closes.
 BEGIN_EVENT_TABLE ( myFrame, wxFrame)
     EVT_BUTTON ( BUTTON_Exit, myFrame::OnExit )
   END_EVENT_TABLE(); 
