@@ -1,4 +1,4 @@
-#include "Main.cpp"
+#include "main.cpp"
 #include <wx-3.2/wx/wx.h>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
