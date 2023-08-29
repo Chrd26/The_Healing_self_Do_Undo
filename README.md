@@ -8,6 +8,8 @@ The current day is saved in a file.
 Then, the application shows the 2 file entries in the application window. The same selection will appear again and again until the day that is saved in the file is different
 than the local day.
 
+## [Demonstration](https://www.youtube.com/watch?v=qlJSBdFpPCM&ab_channel=ChristosDouris)
+
 # Building
 
 To build the application, run the following command:
@@ -17,4 +19,3 @@ It should work when GCC is installed on Linux and MacOS. On windows, mingGW is n
 ```
 g++ ui.cpp -o app `wx-config --libs` `wx-config --cxxflags` \address-to-boost's-system.a-file \address-to-boost's-serialization.a-file
 ```
-
