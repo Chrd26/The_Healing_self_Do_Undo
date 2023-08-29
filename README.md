@@ -12,6 +12,8 @@ than the local day.
 
 # Building
 
+Make sure you have [Boost](https://www.boost.org/) and [Wx-Widgets](https://www.wxwidgets.org/) libraries installed.
+
 To build the application, run the following command:
 
 It should work when GCC is installed on Linux and MacOS. On windows, mingGW is needed.
